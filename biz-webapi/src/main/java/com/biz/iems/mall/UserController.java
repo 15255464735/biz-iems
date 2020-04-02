@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Api(tags = "用户管理")
@@ -34,16 +35,17 @@ public class UserController {
 
     @GetMapping("/getByName")
     @ApiOperation(value = "根据名称获取用户", notes = "根据名称获取用户")
-    public RestResponse<UserRespDto> getByName(@Valid @RequestParam("name") String name){
+    public RestResponse<UserRespDto> getByName(@RequestParam("name") @NotNull(message = "名称不能为空") String name){
         return new RestResponse<>(userService.getUserByName(name));
     }
 
     @PostMapping("/add")
     @ApiOperation(value = "新增用户信息", notes = "新增用户信息")
-    public RestResponse<Void> addUser(@RequestBody UserReqDto userReqDto){
-        //Integer id = userService.addUser(userReqDto); //这种方式也行
+    public RestResponse<Void> addUser(@Valid @RequestBody UserReqDto userReqDto){
+        //Integer id = userService.addUser(userReqDto); //手写sql方式也行
         UserEo userEo = new UserEo();
         BeanUtils.copyProperties(userReqDto, userEo);
+        //调用mybatis插件也行
         userService.save(userEo);
         return RestResponse.VOID;
     }
