@@ -1,0 +1,33 @@
+#配置数据源
+spring:
+  profiles:
+    active: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/springboot?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false
+    username: root
+    password: 123456
+
+#配置项目根路径
+server:
+  servlet:
+    context-path: /myapp
+
+#配置mybatis映射文件
+mybatis:
+  type-aliases-package: com.biz.iems.mall.eo
+  mapper-locations: classpath:mappers/*.xml
+
+
+# swagger相关配置
+swagger.enabled: true
+# myapp.swagger:
+#  basePackage: com.biz.iems.mall.ctrl
+#  title: 学习项目
+#  description: 学习项目前端
+#  version: 1.0.0
+logging.:
+  pattern:
+    dateformat:
+      level: debug
+

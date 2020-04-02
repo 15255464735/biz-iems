@@ -1,0 +1,33 @@
+#��������Դ
+spring:
+  profiles:
+    active: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/springboot?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false
+    username: root
+    password: 123456
+
+#������Ŀ��·��
+server:
+  servlet:
+    context-path: /myapp
+
+#����mybatisӳ���ļ�
+mybatis:
+  type-aliases-package: com.biz.iems.mall.eo
+  mapper-locations: classpath:mappers/*.xml
+
+
+# swagger�������
+swagger.enabled: true
+# myapp.swagger:
+#  basePackage: com.biz.iems.mall.ctrl
+#  title: ѧϰ��Ŀ
+#  description: ѧϰ��Ŀǰ��
+#  version: 1.0.0
+logging.:
+  pattern:
+    dateformat:
+      level: debug
+
