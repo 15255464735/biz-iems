@@ -4,6 +4,7 @@ import com.biz.iems.mall.dto.request.UserReqDto;
 import com.biz.iems.mall.dto.response.UserRespDto;
 import com.biz.iems.mall.eo.UserEo;
 import com.biz.iems.mall.util.RestResponse;
+import com.biz.iems.mall.util.cache.RedisCache;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -21,9 +22,18 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private RedisCache cache;
+
     @GetMapping("/test")
     @ApiOperation(value = "测试接口", notes = "测试接口")
     public RestResponse<Void> test(){
+        String key = "hello";
+        String value = "你好";
+        cache.set(key, value);
+        Object o = cache.get(key);
+        System.out.println((String)o);
+
         return RestResponse.VOID;
     }
 
@@ -49,5 +59,6 @@ public class UserController {
         userService.save(userEo);
         return RestResponse.VOID;
     }
+
 
 }
