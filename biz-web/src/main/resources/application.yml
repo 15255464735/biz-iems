@@ -1,4 +1,4 @@
-#ÅäÖÃÊı¾İÔ´
+
 spring:
   profiles:
     active: prod
@@ -7,27 +7,24 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/springboot?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false
     username: root
     password: 123456
+  redis:
+    port: 6379
+    host: 127.0.0.1
+    password: 123456
 
-#ÅäÖÃÏîÄ¿¸ùÂ·¾¶
+# é¡¹ç›®æ ¹è·¯å¾„
 server:
   servlet:
     context-path: /myapp
 
-#ÅäÖÃmybatisÓ³ÉäÎÄ¼ş
+# mybatisé…ç½®ä¿¡æ¯
 mybatis:
   type-aliases-package: com.biz.iems.mall.eo
   mapper-locations: classpath:mappers/*.xml
 
-
-# swaggerÏà¹ØÅäÖÃ
 swagger.enabled: true
-# myapp.swagger:
-#  basePackage: com.biz.iems.mall.ctrl
-#  title: Ñ§Ï°ÏîÄ¿
-#  description: Ñ§Ï°ÏîÄ¿Ç°¶Ë
-#  version: 1.0.0
+# æ—¥å¿—ä¿¡æ¯
 logging.:
   pattern:
     dateformat:
       level: debug
-
