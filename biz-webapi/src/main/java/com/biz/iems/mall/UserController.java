@@ -1,8 +1,11 @@
 package com.biz.iems.mall;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.biz.iems.mall.dto.request.UserReqDto;
 import com.biz.iems.mall.dto.response.UserRespDto;
 import com.biz.iems.mall.eo.UserEo;
+import com.biz.iems.mall.util.BaseController;
+import com.biz.iems.mall.util.RequestUtil;
 import com.biz.iems.mall.util.RestResponse;
 import com.biz.iems.mall.util.cache.RedisCache;
 import io.swagger.annotations.Api;
@@ -10,14 +13,16 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "用户管理")
 @RestController
 @RequestMapping(value = "/user", produces = "application/json")
-public class UserController {
+public class UserController extends BaseController<UserReqDto> {
 
     @Resource
     private UserService userService;
@@ -35,6 +40,13 @@ public class UserController {
         System.out.println((String)o);
 
         return RestResponse.VOID;
+    }
+
+    @GetMapping("/page")
+    @ApiOperation(value = "获取用户分页列表", notes = "获取用户分页列表")
+    public RestResponse<Page<UserRespDto>> getPage(HttpServletRequest request){
+        Map<String, String> param = RequestUtil.getParameters(request);
+        return new RestResponse<>(userService.getPage(this.getPageObject(), param));
     }
 
     @GetMapping("/list")

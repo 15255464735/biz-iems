@@ -2,7 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.biz.iems.mall.UserMapper">
+
+    <select id="getList" resultType="com.biz.iems.mall.dto.response.UserRespDto" parameterType="java.util.Map">
+        SELECT name, age FROM t_sys_user
+        <where>
+            <if test="param.name != null and param.name !=''"> and name like '%${param.name}'</if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
     <insert id="addUser" useGeneratedKeys="true" keyProperty="id" parameterType="userEo">
         insert into t_sys_user(name, age, telephone) values (#{name}, #{age}, #{telephone})
     </insert>
+
 </mapper>

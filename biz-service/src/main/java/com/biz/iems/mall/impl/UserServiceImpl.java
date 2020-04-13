@@ -1,6 +1,7 @@
 package com.biz.iems.mall.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.biz.iems.mall.UserMapper;
 import com.biz.iems.mall.UserService;
@@ -8,12 +9,11 @@ import com.biz.iems.mall.dto.request.UserReqDto;
 import com.biz.iems.mall.dto.response.UserRespDto;
 import com.biz.iems.mall.eo.UserEo;
 import com.biz.iems.mall.util.CubeBeanUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserEo> implements UserService {
@@ -22,10 +22,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEo> implements 
     private UserMapper userMapper;
 
     @Override
+    public Page<UserRespDto> getPage(Page<UserReqDto> page, Map<String, String> param) {
+        List<UserRespDto> userRespDtoList = userMapper.getList(page, param);
+        Page<UserRespDto> respPage = new Page<>();;
+        CubeBeanUtils.copyProperties(respPage, page, "records");
+        return respPage.setRecords(userRespDtoList);
+    }
+
+    @Override
     public List<UserRespDto> getList() {
-        List<UserEo> userList = userMapper.getList();
-        List<UserRespDto> userRespDtoList = new ArrayList<>(userList.size());
-        CubeBeanUtils.copyCollection(userRespDtoList, userList, UserRespDto.class);
+        List<UserRespDto> userRespDtoList = new ArrayList<>();
+        QueryWrapper<UserEo> wrapper = new QueryWrapper();
+        List<UserEo> userEoList = userMapper.selectList(wrapper);
+        if(CollectionUtils.isNotEmpty(userEoList)){
+            CubeBeanUtils.copyCollection(userRespDtoList, userEoList, UserRespDto.class);
+        }
         return userRespDtoList;
     }
 

@@ -1,4 +1,4 @@
-
+#数据源配置
 spring:
   profiles:
     active: prod
@@ -17,14 +17,13 @@ server:
   servlet:
     context-path: /myapp
 
-# mybatis配置信息
-mybatis:
-  type-aliases-package: com.biz.iems.mall.eo
-  mapper-locations: classpath:mappers/*.xml
-
+# swagger是否启动
 swagger.enabled: true
+
+# mybatis plus 配置信息
+mybatis-plus:
+  mapper-locations: classpath:mappers/*.xml
+  type-aliases-package: com.biz.iems.mall
+
 # 日志信息
-logging.:
-  pattern:
-    dateformat:
-      level: debug
+logging.level.com.biz.iems.mall : debug

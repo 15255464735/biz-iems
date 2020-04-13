@@ -38,6 +38,7 @@
         </dependency>
     </dependencies>
 
+    <!-- springboot 编译和打包的所需的插件-->
     <build>
         <plugins>
             <plugin>
