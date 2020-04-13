@@ -8,6 +8,7 @@ import com.biz.iems.mall.UserService;
 import com.biz.iems.mall.dto.request.UserReqDto;
 import com.biz.iems.mall.dto.response.UserRespDto;
 import com.biz.iems.mall.eo.UserEo;
+import com.biz.iems.mall.util.BizExceptionCode;
 import com.biz.iems.mall.util.BusinessException;
 import com.biz.iems.mall.util.CubeBeanUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -66,7 +67,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEo> implements 
         String key = "hello";
         String value = "你好";
         if(key.equals("hello")){
-            throw new BusinessException("100000","哈哈哈，全局捕获异常成功了");
+            throw new BusinessException(BizExceptionCode.TEST_RESULT_CODE.getCode(),BizExceptionCode.TEST_RESULT_CODE.getMsg());
         }
     }
 }
