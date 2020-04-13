@@ -5,6 +5,7 @@ import com.biz.iems.mall.dto.request.UserReqDto;
 import com.biz.iems.mall.dto.response.UserRespDto;
 import com.biz.iems.mall.eo.UserEo;
 import com.biz.iems.mall.util.BaseController;
+import com.biz.iems.mall.util.BusinessException;
 import com.biz.iems.mall.util.RequestUtil;
 import com.biz.iems.mall.util.RestResponse;
 import com.biz.iems.mall.util.cache.RedisCache;
@@ -35,10 +36,13 @@ public class UserController extends BaseController<UserReqDto> {
     public RestResponse<Void> test(){
         String key = "hello";
         String value = "你好";
-        cache.set(key, value);
-        Object o = cache.get(key);
-        System.out.println((String)o);
-
+//        cache.set(key, value);
+//        Object o = cache.get(key);
+//        System.out.println((String)o);
+//        if(key.equals("hello")){
+//            throw new BusinessException("100000","哈哈哈，成功了");
+//        }
+        userService.test();
         return RestResponse.VOID;
     }
 
