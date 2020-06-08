@@ -38,15 +38,6 @@
         </dependency>
     </dependencies>
 
-    <!-- springboot 编译和打包的所需的插件-->
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
     <modules>
         <module>biz-base</module>
         <module>biz-mapper</module>
