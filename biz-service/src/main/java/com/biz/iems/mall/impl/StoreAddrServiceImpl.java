@@ -2,50 +2,43 @@ package com.biz.iems.mall.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.biz.iems.mall.AddressMapper;
-import com.biz.iems.mall.AddressService;
-import com.biz.iems.mall.AreaMapper;
-import com.biz.iems.mall.eo.AddressEo;
+import com.biz.iems.mall.*;
 import com.biz.iems.mall.eo.AreaEo;
+import com.biz.iems.mall.eo.StoreAddrEo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
-public class AddressServiceImpl extends ServiceImpl<AddressMapper, AddressEo> implements AddressService {
+public class StoreAddrServiceImpl extends ServiceImpl<StoreAddrMapper, StoreAddrEo> implements StoreAddrService {
 
     @Resource
-    private AddressMapper addressMapper;
+    private StoreAddrMapper storeAddrMapper;
 
     @Resource
     private AreaMapper areaMapper;
 
     @Override
-    public List<AddressEo> getList() {
-        QueryWrapper<AddressEo> wrapper = new QueryWrapper();
-        /**
-         * 数量太大，分批查询
-         * 1，  120000100000000000 - 120000100001300000
-         * 2，  120000100001300001 - 120000100002600000
-         */
-        wrapper.orderByAsc("id").ge("id","120000100001300001").le("id", "120000100002600000");
-        return addressMapper.selectList(wrapper);
+    public List<StoreAddrEo> getList() {
+        QueryWrapper<StoreAddrEo> wrapper = new QueryWrapper();
+        return storeAddrMapper.selectList(wrapper);
     }
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public List<AddressEo> updateAddress(List<AddressEo> addressEoList) {
+    public List<StoreAddrEo> updateAddress(List<StoreAddrEo> addressEoList) {
         QueryWrapper<AreaEo> wrapper = new QueryWrapper();
         wrapper.orderByAsc("id");
         List<AreaEo> areaEoList = areaMapper.selectList(wrapper);
-        addressEoList = addressEoList.stream().filter(addressEo ->!StringUtils.isEmpty(addressEo.getDetailAddr())).collect(Collectors.toList());
+        addressEoList = addressEoList.stream().filter(addressEo ->!StringUtils.isEmpty(addressEo.getDetailAddress())).collect(Collectors.toList());
         addressEoList.forEach(addressEo -> {
-                    String detailAddress = addressEo.getDetailAddr();
+                    String detailAddress = addressEo.getDetailAddress();
                     System.out.println("记录id 为: " + addressEo.getId());
                     String [] addressArrays = detailAddress.split("·");
                     String provinceName = "";
@@ -74,7 +67,7 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, AddressEo> im
                     if(CollectionUtils.isNotEmpty(areaEoList1)){
                         AreaEo areaEo1 = areaEoList1.get(0);
                         addressEo.setProvinceCode(areaEo1.getCode());
-                        addressEo.setProvince(areaEo1.getName());
+                        addressEo.setProvinceName(areaEo1.getName());
                     }
 
                     List<AreaEo> areaEoList2 = areaEoList
@@ -84,7 +77,7 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, AddressEo> im
                     if(CollectionUtils.isNotEmpty(areaEoList2)){
                         AreaEo areaEo2 = areaEoList2.get(0);
                         addressEo.setCityCode(areaEo2.getCode());
-                        addressEo.setCity(areaEo2.getName());
+                        addressEo.setCityName(areaEo2.getName());
                     }
 
                     List<AreaEo> areaEoList3 = areaEoList
@@ -93,13 +86,26 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, AddressEo> im
                             .collect(Collectors.toList());
                     if(CollectionUtils.isNotEmpty(areaEoList3)){
                         AreaEo areaEo3 = areaEoList3.get(0);
-                        addressEo.setDistrictCode(areaEo3.getCode());
-                        addressEo.setDistrict(areaEo3.getName());
+                        addressEo.setCountyCode(areaEo3.getCode());
+                        addressEo.setCountyName(areaEo3.getName());
                     }
-                });
 
+                    String shopCard = addressEo.getShopCard();
+                    if(!StringUtils.isEmpty(shopCard)){
+                        String regEx="[^0-9]";
+                        Pattern p = Pattern.compile(regEx);
+                        Matcher m = p.matcher(shopCard);
+                        addressEo.setCodeSerialNum(Integer.valueOf(m.replaceAll("").trim()));
+
+                        String regEx1 = "[^a-zA-Z]";
+                        Pattern p1 = Pattern.compile(regEx1);
+                        Matcher m1 = p1.matcher(shopCard);
+                        addressEo.setCodePrefix(m1.replaceAll("").trim());
+                    }
+
+                });
         addressEoList.forEach(addressEo -> {
-            System.out.println("省: " + addressEo.getProvince() + ", 省编码: " + addressEo.getProvinceCode() + ", 市: " + addressEo.getProvince() + ", 市编码: " + addressEo.getProvinceCode() + ", 区: " + addressEo.getProvince() + ", 区编码: " + addressEo.getProvinceCode());
+            System.out.println("省: " + addressEo.getProvinceName() + ", 省编码: " + addressEo.getProvinceCode() + ", 市: " + addressEo.getCityName() + ", 市编码: " + addressEo.getProvinceCode() + ", 区: " + addressEo.getCountyName() + ", 区编码: " + addressEo.getProvinceCode());
         });
         return addressEoList;
     }
