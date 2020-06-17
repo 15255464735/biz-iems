@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.biz.iems.mall.StoreInfoMapper">
+
+    <resultMap type="com.biz.iems.mall.eo.StoreInfoEo" id="StoreInfoResultMap">
+        <!-- 配置映射的店铺信息 -->
+        <!-- id：指定查询列中的唯 一标识，店铺信息的中的唯 一标识，如果有多个列组成唯一标识，配置多个id
+            column：订单店铺的唯 一标识 列
+            property：店铺信息的唯 一标识 列所映射到StoreInEo中哪个属性
+          -->
+        <id column="id" property="id"/>
+        <result column="code" property="code"/>
+        <result column="member_id" property="memberId"/>
+        <result column="member_name" property="memberName"/>
+        <result column="office_phone" property="officePhone"/>
+        <result column="cellphone" property="cellphone"/>
+        <result column="health_adviser" property="healthAdviser"/>
+        <result column="sale_adviser" property="saleAdviser"/>
+        <result column="health_adviser_card_code" property="healthAdviserCardCode"/>
+        <result column="sale_adviser_card_code" property="saleAdviserCardCode"/>
+        <result column="card_code" property="cardCode"/>
+        <result column="register_type" property="registerType"/>
+        <result column="first_order_amount" property="firstOrderAmount"/>
+        <result column="authorization_code" property="authorizationCode"/>
+        <result column="bank_id" property="bankId"/>
+        <result column="location" property="location"/>
+        <result column="period" property="period"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="type_id" property="typeId"/>
+        <result column="bondsman_name" property="bondsmanName"/>
+        <result column="bondsman_id" property="bondsmanId"/>
+        <result column="bondsman_card_num" property="bondsmanCardNum"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="property" property="property"/>
+        <result column="deduction" property="deduction"/>
+        <result column="status" property="status"/>
+        <result column="idcard_status" property="idcardStatus"/>
+        <result column="license_status" property="licenseStatus"/>
+        <result column="shuiwushu_status" property="shuiwushuStatus"/>
+        <result column="foodallow_status" property="foodallowStatus"/>
+        <result column="houserent_status" property="houserentStatus"/>
+        <result column="storephoto_status" property="storephotoStatus"/>
+        <result column="is_formal" property="isFormal"/>
+        <result column="certificate_audit_status" property="certificateAuditStatus"/>
+        <result column="create_person" property="createPerson"/>
+        <result column="audit" property="audit"/>
+        <result column="remark" property="remark"/>
+        <result column="is_audit" property="isAudit"/>
+        <result column="is_confrim" property="isConfrim"/>
+        <result column="is_auth" property="isAuth"/>
+        <result column="is_report" property="isReport"/>
+        <!-- 配置映射的关联的实体店信息 -->
+        <!-- association：用于映射关联查询单个对象的信息
+        property：要将关联查询的实体店信息映射到StoreInfoEo中哪个属性
+         -->
+        <association property="storeEntityEo"  javaType="com.biz.iems.mall.eo.StoreEntityEo">
+            <!-- id：关联查询用户的唯 一标识
+            column：指定唯 一标识用户信息的列
+            javaType：映射到user的哪个属性
+
+            <id column="user_id" property="id"/>
+            -->
+            <result column="shop_code" property="shopCode"/>
+            <result column="authorization_code" property="authorizationCode"/>
+
+        </association>
+    </resultMap>
+    <select id = "getList"  resultMap = "StoreInfoResultMap">
+        SELECT si.*, se.*
+        FROM ss_store_info si
+        LEFT JOIN ss_store_entity se ON si.code = se.shop_code
+        ORDER BY si.id
+    </select>
+
+</mapper>

@@ -32,5 +32,5 @@ public class StoreAddrEo implements Serializable {
 
     private String codePrefix;
 
-    private Integer codeSerialNum;
+    private Long codeSerialNum;
 }

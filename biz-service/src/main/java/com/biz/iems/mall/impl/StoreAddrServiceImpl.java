@@ -95,12 +95,18 @@ public class StoreAddrServiceImpl extends ServiceImpl<StoreAddrMapper, StoreAddr
                         String regEx="[^0-9]";
                         Pattern p = Pattern.compile(regEx);
                         Matcher m = p.matcher(shopCard);
-                        addressEo.setCodeSerialNum(Integer.valueOf(m.replaceAll("").trim()));
+                        if(!StringUtils.isEmpty(m.replaceAll("").trim())){
+
+                            addressEo.setCodeSerialNum(Long.valueOf(m.replaceAll("").trim()));
+                        }
 
                         String regEx1 = "[^a-zA-Z]";
                         Pattern p1 = Pattern.compile(regEx1);
                         Matcher m1 = p1.matcher(shopCard);
-                        addressEo.setCodePrefix(m1.replaceAll("").trim());
+                        if(!StringUtils.isEmpty(m1.replaceAll("").trim())){
+                            addressEo.setCodePrefix(m1.replaceAll("").trim());
+                        }
+
                     }
 
                 });
