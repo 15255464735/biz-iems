@@ -33,7 +33,7 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, AddressEo> im
          * 1，  120000100000000000 - 120000100001300000
          * 2，  120000100001300001 - 120000100002600000
          */
-        wrapper.orderByAsc("id").ge("id","120000100001300001").le("id", "120000100002600000");
+        //wrapper.orderByAsc("id").ge("id","120000100001600000").le("id", "120000100002600000");
         return addressMapper.selectList(wrapper);
     }
 
@@ -96,10 +96,19 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, AddressEo> im
                         addressEo.setDistrictCode(areaEo3.getCode());
                         addressEo.setDistrict(areaEo3.getName());
                     }
+
+                    //将详细地址 detailAddress 去掉省市区 只保留详细地址
+                    detailAddress = detailAddress.replace("·", "")
+                            .replace(provinceName, "").replace(cityName, "")
+                            .replace(areaName, "");
+                    addressEo.setDetailAddr(detailAddress);
                 });
 
         addressEoList.forEach(addressEo -> {
-            System.out.println("省: " + addressEo.getProvince() + ", 省编码: " + addressEo.getProvinceCode() + ", 市: " + addressEo.getProvince() + ", 市编码: " + addressEo.getProvinceCode() + ", 区: " + addressEo.getProvince() + ", 区编码: " + addressEo.getProvinceCode());
+            System.out.println("省: " + addressEo.getProvince() + ", 省编码: " + addressEo.getProvinceCode() +
+                    ", 市: " + addressEo.getCityCode() + ", 市编码: " + addressEo.getCityCode() +
+                    ", 区: " + addressEo.getDistrict() + ", 区编码: " + addressEo.getDistrictCode() +
+                    ", 详细地址: " + addressEo.getDetailAddr());
         });
         return addressEoList;
     }

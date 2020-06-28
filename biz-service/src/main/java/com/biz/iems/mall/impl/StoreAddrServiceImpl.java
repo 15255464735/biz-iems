@@ -106,8 +106,13 @@ public class StoreAddrServiceImpl extends ServiceImpl<StoreAddrMapper, StoreAddr
                         if(!StringUtils.isEmpty(m1.replaceAll("").trim())){
                             addressEo.setCodePrefix(m1.replaceAll("").trim());
                         }
-
                     }
+
+                    //将详细地址 detailAddress 去掉省市区 只保留详细地址
+                    detailAddress = detailAddress.replace("·", "")
+                            .replace(provinceName, "").replace(cityName, "")
+                            .replace(areaName, "");
+                    addressEo.setDetailAddress(detailAddress);
 
                 });
         addressEoList.forEach(addressEo -> {
