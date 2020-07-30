@@ -27,8 +27,8 @@ public class AddressController extends BaseController<AddressEo> {
         Long startTime = System.currentTimeMillis();
         List<AddressEo> addressEoList = addressService.getList();
         Long endTime = System.currentTimeMillis();
-        System.out.println("查询耗时 : " + (endTime - startTime) + "ms");
-        System.out.println("查询数量 : " + addressEoList.size());
+        System.out.println("查询address 耗时 : " + (endTime - startTime) + "ms");
+        System.out.println("查询address 数量 : " + addressEoList.size());
         List<AddressEo> addressEos = addressService.updateAddress(addressEoList);
         Long time = System.currentTimeMillis();
         System.out.println("处理数据耗时 : " + (time - endTime));

@@ -18,4 +18,8 @@ public class AreaEo implements Serializable {
     private String name;
 
     private String code;
+
+    private String parentCode;
+
+    private Integer levelId;
 }

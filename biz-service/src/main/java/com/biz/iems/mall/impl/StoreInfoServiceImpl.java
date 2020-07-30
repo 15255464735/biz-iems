@@ -33,7 +33,7 @@ public class StoreInfoServiceImpl extends ServiceImpl<StoreInfoMapper, StoreInfo
             //设置 证件审核状态
             //正式店铺
             if(storeInfoEo.getIsFormal() == 1){
-                Integer licenseStatus = storeInfoEo.getLicenseStatus();
+                Integer licenseStatus   = storeInfoEo.getLicenseStatus();
                 Integer shuiwushuStatus = storeInfoEo.getShuiwushuStatus();
                 Integer foodallowStatus = storeInfoEo.getFoodallowStatus();
                 Integer houserentStatus = storeInfoEo.getHouserentStatus();
@@ -62,6 +62,7 @@ public class StoreInfoServiceImpl extends ServiceImpl<StoreInfoMapper, StoreInfo
                 System.out.println("-------------------------- " + storeInfoEo.getCertificateAuditStatus());
 
                 //-------------------------------------------- status设置 ---------------------------------------------------
+                Integer formalStatus = 4;
                 Integer certificationStatus = 0;
                 Integer newStoreStatus = 0;
                 Integer anthStatus = 0;
@@ -89,7 +90,7 @@ public class StoreInfoServiceImpl extends ServiceImpl<StoreInfoMapper, StoreInfo
                         reportStatus = 276;
                     }
                 }
-                Integer status = certificationStatus | newStoreStatus | anthStatus | reportStatus;
+                Integer status = formalStatus | certificationStatus | newStoreStatus | anthStatus | reportStatus;
                 if(status > 999){
                     System.out.println("-- status : " + status);
                 }
