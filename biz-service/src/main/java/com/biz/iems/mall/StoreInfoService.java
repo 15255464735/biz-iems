@@ -1,5 +1,7 @@
 package com.biz.iems.mall;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.biz.iems.mall.eo.StoreAddrEo;
 import com.biz.iems.mall.eo.StoreInfoEo;
@@ -11,5 +13,7 @@ public interface StoreInfoService extends IService<StoreInfoEo> {
     List<StoreInfoEo> getList();
 
     List<StoreInfoEo> updateStatus(List<StoreInfoEo> storeInfoEoList);
+
+    IPage<StoreInfoEo> page(Integer pageNum, Integer pageSize);
 
 }

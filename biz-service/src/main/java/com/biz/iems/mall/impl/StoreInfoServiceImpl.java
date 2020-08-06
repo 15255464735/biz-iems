@@ -1,9 +1,14 @@
 package com.biz.iems.mall.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.biz.iems.mall.StoreInfoMapper;
 import com.biz.iems.mall.StoreInfoService;
+import com.biz.iems.mall.eo.AreaEo;
 import com.biz.iems.mall.eo.StoreEntityEo;
 import com.biz.iems.mall.eo.StoreInfoEo;
 import org.springframework.stereotype.Service;
@@ -103,5 +108,13 @@ public class StoreInfoServiceImpl extends ServiceImpl<StoreInfoMapper, StoreInfo
             }
         });
         return storeInfoEoList;
+    }
+
+    @Override
+    public IPage<StoreInfoEo> page(Integer pageNum, Integer pageSize) {
+        IPage<StoreInfoEo> infoPage = new Page<>(pageNum, pageSize);//参数一是当前页，参数二是每页个数
+        Wrapper<StoreInfoEo> wrapper = new QueryWrapper();
+        IPage<StoreInfoEo> infoEoIPage = storeInfoMapper.selectPage(infoPage, wrapper);//第二个参数 是wrapper,如果不需要查询参数的时候，可为null
+        return infoEoIPage;
     }
 }
